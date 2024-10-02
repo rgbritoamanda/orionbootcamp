@@ -9,17 +9,55 @@ let lista: Array<{ id: number, name: string, bio: string }> = [
 
 let historicoExclusoes: Array<{ id: number, name: string, bio: string }> = [];
 
-function getBioById(id: number): string | undefined {
+function getBioByIdImperativo(id: number): string | undefined {
+  for (let i = 0; i < lista.length; i++) {
+    if (lista[i].id === id) {
+      return lista[i].bio;
+    }
+  }
+  return undefined;
+}
+
+function getNameByIdImperativo(id: number): string | undefined {
+  for (let i = 0; i < lista.length; i++) {
+    if (lista[i].id === id) {
+      return lista[i].name;
+    }
+  }
+  return undefined;
+}
+
+function deleteByIdImperativo(id: number): void {
+  for (let i = 0; i < lista.length; i++) {
+    if (lista[i].id === id) {
+      historicoExclusoes.push(lista[i]);
+      lista.splice(i, 1);
+      break;
+    }
+  }
+}
+
+function updateByIdImperativo(id: number, newName?: string, newBio?: string): void {
+  for (let i = 0; i < lista.length; i++) {
+    if (lista[i].id === id) {
+      lista[i].name = newName || lista[i].name;
+      lista[i].bio = newBio || lista[i].bio;
+      break;
+    }
+  }
+}
+
+function getBioByIdFuncional(id: number): string | undefined {
   const item = lista.find(item => item.id === id);
   return item ? item.bio : undefined;
 }
 
-function getNameById(id: number): string | undefined {
+function getNameByIdFuncional(id: number): string | undefined {
   const item = lista.find(item => item.id === id);
   return item ? item.name : undefined;
 }
 
-function deleteById(id: number): void {
+function deleteByIdFuncional(id: number): void {
   const item = lista.find(item => item.id === id);
   if (item) {
     historicoExclusoes.push(item);
@@ -27,17 +65,7 @@ function deleteById(id: number): void {
   }
 }
 
-function desfazerUltimaExclusao(): void {
-  const itemRestaurado = historicoExclusoes.pop();
-  if (itemRestaurado) {
-    lista.push(itemRestaurado);
-    console.log(`Item com ID ${itemRestaurado.id} foi restaurado.`);
-  } else {
-    console.log("Nenhuma exclusão para desfazer.");
-  }
-}
-
-function updateById(id: number, newName?: string, newBio?: string): void {
+function updateByIdFuncional(id: number, newName?: string, newBio?: string): void {
   lista = lista.map(item => {
     if (item.id === id) {
       return {
@@ -48,6 +76,16 @@ function updateById(id: number, newName?: string, newBio?: string): void {
     }
     return item;
   });
+}
+
+function desfazerUltimaExclusao(): void {
+  const itemRestaurado = historicoExclusoes.pop();
+  if (itemRestaurado) {
+    lista.push(itemRestaurado);
+    console.log(`Item com ID ${itemRestaurado.id} foi restaurado.`);
+  } else {
+    console.log("Nenhuma exclusão para desfazer.");
+  }
 }
 
 function printLista(lista: Array<{ id: number, name: string, bio: string }>) {
@@ -95,15 +133,18 @@ function escolherOperacao() {
 
       switch (operacaoEscolhida) {
         case 1:
-          console.log(`Bio do ID ${id}:`, getBioById(id) || "ID não encontrado.");
+          console.log(`Bio do ID ${id} (Funcional):`, getBioByIdFuncional(id) || "ID não encontrado.");
+          console.log(`Bio do ID ${id} (Imperativo):`, getBioByIdImperativo(id) || "ID não encontrado.");
           break;
         case 2:
-          console.log(`Nome do ID ${id}:`, getNameById(id) || "ID não encontrado.");
+          console.log(`Nome do ID ${id} (Funcional):`, getNameByIdFuncional(id) || "ID não encontrado.");
+          console.log(`Nome do ID ${id} (Imperativo):`, getNameByIdImperativo(id) || "ID não encontrado.");
           break;
         case 3:
           console.log(`\nAntes de deletar ID ${id}:`);
           printLista(lista);
-          deleteById(id);
+          deleteByIdFuncional(id);
+          deleteByIdImperativo(id);
           console.log(`\nDepois de deletar ID ${id}:`);
           printLista(lista);
           break;
@@ -112,7 +153,8 @@ function escolherOperacao() {
             rl2.question("Digite a nova bio (ou pressione Enter para manter a mesma): ", (newBio: string) => {
               console.log(`\nAntes de atualizar ID ${id}:`);
               printLista(lista);
-              updateById(id, newName || undefined, newBio || undefined);
+              updateByIdFuncional(id, newName || undefined, newBio || undefined);
+              updateByIdImperativo(id, newName || undefined, newBio || undefined);
               console.log(`\nDepois de atualizar ID ${id}:`);
               printLista(lista);
               escolherOperacao();
