@@ -1,15 +1,17 @@
 const readline2 = require('readline');
 
 let lista: Array<{ id: number, name: string, bio: string }> = [
-  {"id": 1, "name": "Ada Lovelace", "bio": "Ada Lovelace, foi uma matemática e escritora inglesa reconhecida por ter escrito o primeiro algoritmo para ser processado por uma máquina"},
-  {"id": 2, "name": "Alan Turing", "bio": "Alan Turing foi um matemático, cientista da computação, lógico, criptoanalista, filósofo e biólogo teórico britânico, ele é amplamente considerado o pai da ciência da computação teórica e da inteligência artificial"},
-  {"id": 3, "name": "Nikola Tesla", "bio": "Nikola Tesla foi um inventor, engenheiro eletrotécnico e engenheiro mecânico sérvio, mais conhecido por suas contribuições ao projeto do moderno sistema de fornecimento de eletricidade em corrente alternada."},
-  {"id": 4, "name": "Nicolau Copérnico", "bio": "Nicolau Copérnico foi um astrônomo e matemático polonês que desenvolveu a teoria heliocêntrica do Sistema Solar."}
+  { id: 1, name: "Ada Lovelace", bio: "Ada Lovelace, foi uma matemática e escritora inglesa reconhecida por ter escrito o primeiro algoritmo para ser processado por uma máquina" },
+  { id: 2, name: "Alan Turing", bio: "Alan Turing foi um matemático, cientista da computação, lógico, criptoanalista, filósofo e biólogo teórico britânico, ele é amplamente considerado o pai da ciência da computação teórica e da inteligência artificial" },
+  { id: 3, name: "Nikola Tesla", bio: "Nikola Tesla foi um inventor, engenheiro eletrotécnico e engenheiro mecânico sérvio, mais conhecido por suas contribuições ao projeto do moderno sistema de fornecimento de eletricidade em corrente alternada." },
+  { id: 4, name: "Nicolau Copérnico", bio: "Nicolau Copérnico foi um astrônomo e matemático polonês que desenvolveu a teoria heliocêntrica do Sistema Solar." }
 ];
 
 let historicoExclusoes: Array<{ id: number, name: string, bio: string }> = [];
 
-function getBioByIdImperativo(id: number): string | undefined {
+// Funções Imperativas
+function getBioByIdImperativo(params: { id: number }): string | undefined {
+  const { id } = params;
   for (let i = 0; i < lista.length; i++) {
     if (lista[i].id === id) {
       return lista[i].bio;
@@ -18,7 +20,8 @@ function getBioByIdImperativo(id: number): string | undefined {
   return undefined;
 }
 
-function getNameByIdImperativo(id: number): string | undefined {
+function getNameByIdImperativo(params: { id: number }): string | undefined {
+  const { id } = params;
   for (let i = 0; i < lista.length; i++) {
     if (lista[i].id === id) {
       return lista[i].name;
@@ -27,7 +30,8 @@ function getNameByIdImperativo(id: number): string | undefined {
   return undefined;
 }
 
-function deleteByIdImperativo(id: number): void {
+function deleteByIdImperativo(params: { id: number }): void {
+  const { id } = params;
   for (let i = 0; i < lista.length; i++) {
     if (lista[i].id === id) {
       historicoExclusoes.push(lista[i]);
@@ -37,27 +41,32 @@ function deleteByIdImperativo(id: number): void {
   }
 }
 
-function updateByIdImperativo(id: number, newName?: string, newBio?: string): void {
+function updateByIdImperativo(params: { id: number, name?: string, bio?: string }): void {
+  const { id, name, bio } = params;
   for (let i = 0; i < lista.length; i++) {
     if (lista[i].id === id) {
-      lista[i].name = newName || lista[i].name;
-      lista[i].bio = newBio || lista[i].bio;
+      lista[i].name = name || lista[i].name;
+      lista[i].bio = bio || lista[i].bio;
       break;
     }
   }
 }
 
-function getBioByIdFuncional(id: number): string | undefined {
+// Funções Funcionais
+function getBioByIdFuncional(params: { id: number }): string | undefined {
+  const { id } = params;
   const item = lista.find(item => item.id === id);
   return item ? item.bio : undefined;
 }
 
-function getNameByIdFuncional(id: number): string | undefined {
+function getNameByIdFuncional(params: { id: number }): string | undefined {
+  const { id } = params;
   const item = lista.find(item => item.id === id);
   return item ? item.name : undefined;
 }
 
-function deleteByIdFuncional(id: number): void {
+function deleteByIdFuncional(params: { id: number }): void {
+  const { id } = params;
   const item = lista.find(item => item.id === id);
   if (item) {
     historicoExclusoes.push(item);
@@ -65,13 +74,14 @@ function deleteByIdFuncional(id: number): void {
   }
 }
 
-function updateByIdFuncional(id: number, newName?: string, newBio?: string): void {
+function updateByIdFuncional(params: { id: number, name?: string, bio?: string }): void {
+  const { id, name, bio } = params;
   lista = lista.map(item => {
     if (item.id === id) {
       return {
         ...item,
-        name: newName || item.name,
-        bio: newBio || item.bio
+        name: name || item.name,
+        bio: bio || item.bio
       };
     }
     return item;
@@ -133,28 +143,28 @@ function escolherOperacao() {
 
       switch (operacaoEscolhida) {
         case 1:
-          console.log(`Bio do ID ${id} (Funcional):`, getBioByIdFuncional(id) || "ID não encontrado.");
-          console.log(`Bio do ID ${id} (Imperativo):`, getBioByIdImperativo(id) || "ID não encontrado.");
+          console.log(`Bio do ID ${id} (Funcional):`, getBioByIdFuncional({ id }) || "ID não encontrado.");
+          console.log(`Bio do ID ${id} (Imperativo):`, getBioByIdImperativo({ id }) || "ID não encontrado.");
           break;
         case 2:
-          console.log(`Nome do ID ${id} (Funcional):`, getNameByIdFuncional(id) || "ID não encontrado.");
-          console.log(`Nome do ID ${id} (Imperativo):`, getNameByIdImperativo(id) || "ID não encontrado.");
+          console.log(`Nome do ID ${id} (Funcional):`, getNameByIdFuncional({ id }) || "ID não encontrado.");
+          console.log(`Nome do ID ${id} (Imperativo):`, getNameByIdImperativo({ id }) || "ID não encontrado.");
           break;
         case 3:
           console.log(`\nAntes de deletar ID ${id}:`);
           printLista(lista);
-          deleteByIdFuncional(id);
-          deleteByIdImperativo(id);
+          deleteByIdFuncional({ id });
+          deleteByIdImperativo({ id });
           console.log(`\nDepois de deletar ID ${id}:`);
           printLista(lista);
           break;
         case 4:
-          rl2.question("Digite o novo nome (ou pressione Enter para manter o mesmo): ", (newName: string) => {
-            rl2.question("Digite a nova bio (ou pressione Enter para manter a mesma): ", (newBio: string) => {
+          rl2.question("Digite o novo nome (ou pressione Enter para manter o mesmo): ", (name: string) => {
+            rl2.question("Digite a nova bio (ou pressione Enter para manter a mesma): ", (bio: string) => {
               console.log(`\nAntes de atualizar ID ${id}:`);
               printLista(lista);
-              updateByIdFuncional(id, newName || undefined, newBio || undefined);
-              updateByIdImperativo(id, newName || undefined, newBio || undefined);
+              updateByIdFuncional({ id, name, bio });
+              updateByIdImperativo({ id, name, bio });
               console.log(`\nDepois de atualizar ID ${id}:`);
               printLista(lista);
               escolherOperacao();
