@@ -8,13 +8,26 @@
 </head>
 
 <body>
-  <h1>Exercício 03 - Orion Bootcamp</h1>
-  <p>
-    Este é o terceiro exercício de nivelamento do Orion Bootcamp. O objetivo é criar uma página web interativa que
-    demonstra, de maneira prática, os exercícios 01 e 02. Esses exercícios incluem a contagem de vogais em uma palavra e
-    a manipulação de uma lista de personalidades, permitindo visualizar o funcionamento completo e interativo desses
-    exemplos em um ambiente web.
-  </p>
+  <h1>Orion Bootcamp</h1>
+
+  <div>
+    <h2>Contagem de Vogais</h2>
+    <h4>Digite uma palavra para descobrir quantas vogais ela possui.</h4>
+    <label for="palavraInput">Palavra:</label>
+    <input type="text" id="palavraInput" placeholder="Digite uma palavra"
+      aria-label="Digite uma palavra para contagem de vogais">
+    <button id="btnContarVogais">Contar Vogais</button>
+    <p id="resultadoVogais"></p>
+  </div>
+
+  <script src="ex001.js"></script>
+  <script>
+    document.getElementById('btnContarVogais').addEventListener('click', function () {
+      const palavra = document.getElementById('palavraInput').value;
+      const resultado = contarVogais(palavra);
+      document.getElementById('resultadoVogais').innerText = `Quantidade de vogais em "${palavra}": ${resultado}`;
+    });
+  </script>
 </body>
 
 </html>
