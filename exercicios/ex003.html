@@ -24,9 +24,11 @@
   <!-- Exercício 2: Operações com Lista de Personalidades -->
   <div>
     <h2>Operações com Lista de Personalidades</h2>
-    <h4>Digite o ID e escolha uma operação para realizar.</h4>
-    <label for="inputId">ID:</label>
-    <input type="text" id="inputId" placeholder="Digite o ID">
+    <h4>Escolha o ID e a operação para realizar.</h4>
+    <label for="selectId">ID:</label>
+    <select id="selectId">
+      <!-- IDs disponíveis serão adicionados dinamicamente -->
+    </select>
     <label for="operacao">Selecione uma operação:</label>
     <select id="operacao">
       <option value="1">1 - Obter Bio por ID</option>
@@ -34,6 +36,7 @@
       <option value="3">3 - Deletar por ID</option>
       <option value="4">4 - Atualizar por ID</option>
       <option value="5">5 - Desfazer última exclusão</option>
+      <option value="6">6 - Desfazer última alteração</option>
     </select>
     <div id="updateFields" style="display: none;">
       <label for="inputName">Novo Nome (opcional):</label>
@@ -52,78 +55,83 @@
   <!-- Scripts relacionados aos eventos do HTML -->
   <script>
     window.onload = function () {
+      // Função para atualizar os IDs disponíveis no select
+      function atualizarSelectIds() {
+        const selectId = document.getElementById('selectId');
+        selectId.innerHTML = ''; // Limpar opções existentes
+        lista.forEach(item => {
+          const option = document.createElement('option');
+          option.value = item.id;
+          option.text = item.id;
+          selectId.appendChild(option);
+        });
+      }
+
+      // Atualiza os IDs no carregamento da página
+      atualizarSelectIds();
+
       // Exercício 1: Contagem de Vogais
       document.getElementById('btnContarVogais').addEventListener('click', function () {
-        // Pega o valor digitado no campo de input
         const palavra = document.getElementById('palavraInput').value;
-        // Chama a função contarVogais (definida no arquivo transpilado ex001.js)
         const resultado = contarVogais(palavra);
-        // Exibe o resultado no parágrafo abaixo do botão
         document.getElementById('resultadoVogais').innerText = `Quantidade de vogais em "${palavra}": ${resultado}`;
       });
 
       // Exercício 2: Operações com Lista de Personalidades
       const selectOperacao = document.getElementById('operacao');
       const updateFields = document.getElementById('updateFields');
-      const inputId = document.getElementById('inputId');
+      const selectId = document.getElementById('selectId');
       const resultadoOperacao = document.getElementById('resultadoOperacao');
 
       // Mostrar campos para atualização apenas se "Atualizar" for selecionado
       selectOperacao.addEventListener('change', function () {
-        // Exibe os campos de atualização se a operação escolhida for "4 - Atualizar por ID"
         updateFields.style.display = selectOperacao.value === '4' ? 'block' : 'none';
       });
 
       // Executar operação selecionada
       document.getElementById('btnExecutar').addEventListener('click', function () {
-        // Pega o valor da operação selecionada e do ID digitado
         const operacao = selectOperacao.value;
-        const id = parseInt(inputId.value);
+        const id = parseInt(selectId.value);
         let resultado = '';
 
-        // Verifica se o ID é um número válido
-        if (isNaN(id)) {
+        if (isNaN(id) && operacao !== '5' && operacao !== '6') {
           resultadoOperacao.innerText = "Por favor, insira um ID válido.";
           return;
         }
 
-        // Executa a operação baseada na seleção do usuário
         switch (operacao) {
           case '1': // Obter Bio por ID
-            // Chama a função getBioByIdFuncional (do arquivo transpilado ex002.js)
             resultado = getBioByIdFuncional({ id }) || "ID não encontrado.";
             break;
           case '2': // Obter Nome por ID
-            // Chama a função getNameByIdFuncional (do arquivo transpilado ex002.js)
             resultado = getNameByIdFuncional({ id }) || "ID não encontrado.";
             break;
           case '3': // Deletar por ID
-            // Chama a função deleteByIdFuncional (do arquivo transpilado ex002.js)
             deleteByIdFuncional({ id });
-            resultado = `Registro com ID ${id} deletado (se existia).`;
+            resultado = "Deletado com sucesso!";
+            atualizarSelectIds(); // Atualiza os IDs disponíveis
             break;
           case '4': // Atualizar por ID
-            // Pega os valores dos campos de Nome e Bio para a atualização
             const newName = document.getElementById('inputName').value;
             const newBio = document.getElementById('inputBio').value;
-            // Chama a função updateByIdFuncional (do arquivo transpilado ex002.js)
             updateByIdFuncional({ id, name: newName, bio: newBio });
-            resultado = `Registro com ID ${id} atualizado (se existia).`;
-            // Limpa os campos de Nome e Bio após a atualização
+            resultado = "Atualizado com sucesso!";
             document.getElementById('inputName').value = '';
             document.getElementById('inputBio').value = '';
             break;
           case '5': // Desfazer última exclusão
-            // Chama a função desfazerUltimaExclusao (do arquivo transpilado ex002.js)
             desfazerUltimaExclusao();
-            resultado = "Última exclusão desfeita (se possível).";
+            resultado = "Última exclusão desfeita com sucesso!";
+            atualizarSelectIds(); // Atualiza os IDs disponíveis
+            break;
+          case '6': // Desfazer última alteração
+            desfazerUltimaAlteracao();
+            resultado = "Última alteração desfeita com sucesso!";
+            atualizarSelectIds(); // Atualiza os IDs disponíveis
             break;
         }
 
-        // Exibe o resultado da operação
         resultadoOperacao.innerText = resultado;
-        // Limpa o campo de ID após a operação
-        inputId.value = '';
       });
     };
   </script>
