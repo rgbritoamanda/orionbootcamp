@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercício 03 - Orion Bootcamp</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #4B0082;
+      color: #F5F5F5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      color: #FF6F61;
+      margin-top: 20px;
+    }
+
+    p {
+      max-width: 600px;
+      text-align: center;
+      color: #E6E6FA;
+    }
+
+    div {
+      background-color: #6A5ACD;
+      padding: 20px;
+      margin: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      max-width: 600px;
+      width: 100%;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    select {
+      padding: 10px;
+      border: 1px solid #6A5ACD;
+      border-radius: 5px;
+      width: calc(100% - 22px);
+      margin-bottom: 10px;
+    }
+
+    button {
+      background-color: #FF6F61;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background-color: #FF836F;
+    }
+
+    #resultadoVogais,
+    #resultadoOperacao {
+      margin-top: 15px;
+      color: #E6E6FA;
+      background-color: #4B0082;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 1.2em;
+      text-align: center;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #historicoCommits {
+      background-color: #6A5ACD;
+      padding: 20px;
+      margin: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      max-width: 600px;
+      width: 100%;
+    }
+
+    #imgHistorico {
+      max-width: 100%;
+      border-radius: 10px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Orion Bootcamp</h1>
+
+  <div>
+    <h2>Contagem de Vogais</h2>
+    <h4>Digite uma palavra para descobrir quantas vogais ela possui.</h4>
+    <label for="palavraInput">Palavra:</label>
+    <input type="text" id="palavraInput" placeholder="Digite uma palavra"
+      aria-label="Digite uma palavra para contagem de vogais">
+    <button id="btnContarVogais">Contar Vogais</button>
+    <p id="resultadoVogais"></p>
+  </div>
+
+  <div>
+    <h2>Operações com Lista de Personalidades</h2>
+    <h4>Escolha o ID e a operação para realizar.</h4>
+    <label for="selectId">ID:</label>
+    <select id="selectId"></select>
+    <label for="operacao">Selecione uma operação:</label>
+    <select id="operacao">
+      <option value="1">1 - Obter Bio por ID</option>
+      <option value="2">2 - Obter Nome por ID</option>
+      <option value="3">3 - Deletar por ID</option>
+      <option value="4">4 - Atualizar por ID</option>
+      <option value="5">5 - Desfazer última exclusão</option>
+      <option value="6">6 - Desfazer última alteração</option>
+    </select>
+    <div id="updateFields" class="hidden">
+      <label for="inputName">Novo Nome (opcional):</label>
+      <input type="text" id="inputName" placeholder="Nome">
+      <label for="inputBio">Nova Bio (opcional):</label>
+      <input type="text" id="inputBio" placeholder="Bio">
+    </div>
+    <button id="btnExecutar">Executar Operação</button>
+    <p id="resultadoOperacao"></p>
+  </div>
+
+  <div id="historicoCommits">
+    <h2>Histórico de Commits</h2>
+    <img id="imgHistorico" src="./imag/commits.png" alt="Histórico de commits do projeto">
+  </div>
+
+  <script src="./ex001.js"></script>
+  <script src="./ex002.js"></script>
+
+  <script>
+    window.onload = function () {
+      function atualizarSelectIds() {
+        const selectId = document.getElementById('selectId');
+        selectId.innerHTML = '';
+        lista.forEach(item => {
+          const option = document.createElement('option');
+          option.value = item.id;
+          option.text = item.id;
+          selectId.appendChild(option);
+        });
+      }
+
+      atualizarSelectIds();
+
+      document.getElementById('btnContarVogais').addEventListener('click', function () {
+        const palavra = document.getElementById('palavraInput').value;
+        const resultado = contarVogais(palavra);
+        document.getElementById('resultadoVogais').innerText = `Quantidade de vogais em "${palavra}": ${resultado}`;
+      });
+
+      const selectOperacao = document.getElementById('operacao');
+      const updateFields = document.getElementById('updateFields');
+      const selectId = document.getElementById('selectId');
+      const resultadoOperacao = document.getElementById('resultadoOperacao');
+
+      selectOperacao.addEventListener('change', function () {
+        if (selectOperacao.value === '4') {
+          updateFields.classList.remove('hidden');
+        } else {
+          updateFields.classList.add('hidden');
+        }
+      });
+
+      document.getElementById('btnExecutar').addEventListener('click', function () {
+        const operacao = selectOperacao.value;
+        const id = parseInt(selectId.value);
+        let resultado = '';
+
+        if (isNaN(id) && operacao !== '5' && operacao !== '6') {
+          resultadoOperacao.innerText = "Por favor, insira um ID válido.";
+          return;
+        }
+
+        switch (operacao) {
+          case '1':
+            resultado = getBioByIdFuncional({ id }) || "ID não encontrado.";
+            break;
+          case '2':
+            resultado = getNameByIdFuncional({ id }) || "ID não encontrado.";
+            break;
+          case '3':
+            deleteByIdFuncional({ id });
+            resultado = "Deletado com sucesso!";
+            atualizarSelectIds();
+            break;
+          case '4':
+            const newName = document.getElementById('inputName').value;
+            const newBio = document.getElementById('inputBio').value;
+            updateByIdFuncional({ id, name: newName, bio: newBio });
+            resultado = "Atualizado com sucesso!";
+            document.getElementById('inputName').value = '';
+            document.getElementById('inputBio').value = '';
+            break;
+          case '5':
+            desfazerUltimaExclusao();
+            resultado = "Última exclusão desfeita com sucesso!";
+            atualizarSelectIds();
+            break;
+          case '6':
+            desfazerUltimaAlteracao();
+            resultado = "Última alteração desfeita com sucesso!";
+            atualizarSelectIds();
+            break;
+        }
+
+        resultadoOperacao.innerText = resultado;
+      });
+    };
+  </script>
+</body>
+
+</html>
