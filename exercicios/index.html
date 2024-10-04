@@ -82,13 +82,47 @@
     .hidden {
       display: none;
     }
+
+    #historicoCommits {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #3B3B98;
+      border-radius: 10px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 600px;
+    }
+
+    #historicoCommits h3 {
+      color: #FF6F61;
+    }
+
+    #historicoCommits ul {
+      list-style-type: none;
+      padding: 0;
+      color: #E6E6FA;
+    }
+
+    #historicoCommits ul li {
+      margin-bottom: 10px;
+      background-color: #4B0082;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    #imgHistorico {
+      margin-top: 20px;
+      max-width: 100%;
+      border-radius: 10px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
   </style>
 </head>
 
 <body>
   <h1>Orion Bootcamp</h1>
 
-  <!-- Exercício 1: Contagem de Vogais -->
   <div>
     <h2>Contagem de Vogais</h2>
     <h4>Digite uma palavra para descobrir quantas vogais ela possui.</h4>
@@ -99,14 +133,11 @@
     <p id="resultadoVogais"></p>
   </div>
 
-  <!-- Exercício 2: Operações com Lista de Personalidades -->
   <div>
     <h2>Operações com Lista de Personalidades</h2>
     <h4>Escolha o ID e a operação para realizar.</h4>
     <label for="selectId">ID:</label>
-    <select id="selectId">
-      <!-- IDs disponíveis serão adicionados dinamicamente -->
-    </select>
+    <select id="selectId"></select>
     <label for="operacao">Selecione uma operação:</label>
     <select id="operacao">
       <option value="1">1 - Obter Bio por ID</option>
@@ -126,17 +157,25 @@
     <p id="resultadoOperacao"></p>
   </div>
 
-  <!-- Inclusão do JavaScript transpilado -->
+  <div id="historicoCommits">
+    <h3>Histórico de Commits</h3>
+    <ul id="listaCommits">
+      <li>Commit 1: Implementação inicial dos exercícios.</li>
+      <li>Commit 2: Correção de bugs e melhorias no layout.</li>
+      <li>Commit 3: Adicionada a funcionalidade de desfazer exclusão.</li>
+      <li>Commit 4: Ajustes de estilização e melhoria da experiência do usuário.</li>
+    </ul>
+    <img id="imgHistorico" src="./imag/commits.png" alt="Histórico de commits do projeto">
+  </div>
+
   <script src="ex001.js"></script>
   <script src="ex002.js"></script>
 
-  <!-- Scripts relacionados aos eventos do HTML -->
   <script>
     window.onload = function () {
-      // Função para atualizar os IDs disponíveis no select
       function atualizarSelectIds() {
         const selectId = document.getElementById('selectId');
-        selectId.innerHTML = ''; // Limpar opções existentes
+        selectId.innerHTML = '';
         lista.forEach(item => {
           const option = document.createElement('option');
           option.value = item.id;
@@ -145,23 +184,19 @@
         });
       }
 
-      // Atualiza os IDs no carregamento da página
       atualizarSelectIds();
 
-      // Exercício 1: Contagem de Vogais
       document.getElementById('btnContarVogais').addEventListener('click', function () {
         const palavra = document.getElementById('palavraInput').value;
         const resultado = contarVogais(palavra);
         document.getElementById('resultadoVogais').innerText = `Quantidade de vogais em "${palavra}": ${resultado}`;
       });
 
-      // Exercício 2: Operações com Lista de Personalidades
       const selectOperacao = document.getElementById('operacao');
       const updateFields = document.getElementById('updateFields');
       const selectId = document.getElementById('selectId');
       const resultadoOperacao = document.getElementById('resultadoOperacao');
 
-      // Mostrar campos para atualização apenas se "Atualizar" for selecionado
       selectOperacao.addEventListener('change', function () {
         if (selectOperacao.value === '4') {
           updateFields.classList.remove('hidden');
@@ -170,7 +205,6 @@
         }
       });
 
-      // Executar operação selecionada
       document.getElementById('btnExecutar').addEventListener('click', function () {
         const operacao = selectOperacao.value;
         const id = parseInt(selectId.value);
@@ -182,18 +216,18 @@
         }
 
         switch (operacao) {
-          case '1': // Obter Bio por ID
+          case '1':
             resultado = getBioByIdFuncional({ id }) || "ID não encontrado.";
             break;
-          case '2': // Obter Nome por ID
+          case '2':
             resultado = getNameByIdFuncional({ id }) || "ID não encontrado.";
             break;
-          case '3': // Deletar por ID
+          case '3':
             deleteByIdFuncional({ id });
             resultado = "Deletado com sucesso!";
-            atualizarSelectIds(); // Atualiza os IDs disponíveis
+            atualizarSelectIds();
             break;
-          case '4': // Atualizar por ID
+          case '4':
             const newName = document.getElementById('inputName').value;
             const newBio = document.getElementById('inputBio').value;
             updateByIdFuncional({ id, name: newName, bio: newBio });
@@ -201,15 +235,15 @@
             document.getElementById('inputName').value = '';
             document.getElementById('inputBio').value = '';
             break;
-          case '5': // Desfazer última exclusão
+          case '5':
             desfazerUltimaExclusao();
             resultado = "Última exclusão desfeita com sucesso!";
-            atualizarSelectIds(); // Atualiza os IDs disponíveis
+            atualizarSelectIds();
             break;
-          case '6': // Desfazer última alteração
+          case '6':
             desfazerUltimaAlteracao();
             resultado = "Última alteração desfeita com sucesso!";
-            atualizarSelectIds(); // Atualiza os IDs disponíveis
+            atualizarSelectIds();
             break;
         }
 
