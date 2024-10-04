@@ -1,26 +1,27 @@
-# orionbootcamp
-Exercícios nivelamento do Orion Bootcamp
+# Orion Bootcamp - Exercícios de Nivelamento
 
-EX001
+Este repositório contém os exercícios de nivelamento do Orion Bootcamp, desenvolvidos para praticar conceitos de TypeScript, Node.js, manipulação de arrays, e a criação de uma interface de interação com HTML.
 
-1 - Criar uma função que retorne a quantidade de vogais da palavra passada.
-a) Dar um exemplo de uso com uma palavra recebida via parâmetro da função.
-b) Dar um exemplo de uso com uma palavra recebida via input no formulário.
+## Deploy do Projeto
 
-EX002
+Você pode acessar o projeto publicado no GitHub Pages através do link:
+[Orion Bootcamp - Exercícios de Nivelamento](https://rgbritoamanda.github.io/orionbootcamp/)
 
-2 - Dado o array:
+## Estrutura do Projeto
 
-let lista = new Array<Object> = [
-{"id" : 1, "name": "Ada Lovelace", "bio" : "Ada Lovelace, foi uma matemática e escritora inglesa reconhecida por ter escrito o primeiro algoritmo para ser processado por uma máquina"},
-{"id" : 2, "name": "Alan Turing", "bio" : "Alan Turing foi um matemático, cientista da computação, lógico, criptoanalista, filósofo e biólogo teórico britânico, ele é amplamente considerado o pai da ciência da computação teórica e da inteligência artificial"},
-{"id" : 3, "name": "Nikola Tesla", "bio" : "Nikola Tesla foi um inventor, engenheiro eletrotécnico e engenheiro mecânico sérvio, mais conhecido por suas contribuições ao projeto do moderno sistema de fornecimento de eletricidade em corrente alternada."},
-{"id" : 4, "name": "Nicolau Copérnico", "bio": "Nicolau Copérnico foi um astrônomo e matemático polonês que desenvolveu a teoria heliocêntrica do Sistema Solar."}];
+### EX001 - Contagem de Vogais
+Este exercício consiste em criar uma função que retorna a quantidade de vogais presentes em uma palavra. Foram implementados exemplos de uso com um parâmetro recebido pela função e também com input do formulário na interface web.
 
-];
+### EX002 - Operações com Lista de Personalidades
+Neste exercício, trabalhamos com um array de objetos representando algumas personalidades históricas. Cada objeto contém um `id`, `name` e `bio`. As operações realizadas incluem obter informações com base no ID, deletar ou atualizar elementos da lista, utilizando tanto abordagens funcionais quanto imperativas.
 
-a) Crie uma função que retorne a bio do id passado
-b) Crie uma função que retorne o name do id passado
-c) Crie uma função que apague um item da lista a partir de um id passado
-d) Crie uma função que altere a bio ou o name a partir de um id passado
-e) Demonstre todas as funções com o paradigma funcional e com o imperativo
+### EX003 - Página Web
+Este exercício consistiu em criar uma página web para permitir a interação do usuário através do navegador. Utilizamos um transpilador para converter TypeScript em JavaScript, permitindo que o código fosse executado diretamente no navegador, além de HTML e CSS para criar e estilizar a interface.
+
+## Tecnologias Utilizadas
+
+- **HTML**: Para criar a estrutura da página e os formulários de interação.
+- **CSS**: Utilizado para estilizar a página e tornar a interface mais agradável.
+- **TypeScript**: Utilizado para criar os scripts dos exercícios de maneira tipada, melhorando a segurança do código.
+- **Node.js**: Usado para executar os scripts TypeScript no backend.
+- **JavaScript**: Após a transpilação, JavaScript foi usado para interação no frontend.
